@@ -18,23 +18,6 @@
 #include <stdio.h>
 
 /* ---------------------------
-   A. Init / deinit
---------------------------- */
-
-static void test_init_deinit(void) {
-    TEST_INFO("Init / deinit");
-
-    TEST_ASSERT(sn_time_init() == true);
-    sn_time_deinit();
-
-    /* deinit without init should be safe */
-    sn_time_deinit();
-
-    /* Re-init */
-    TEST_ASSERT(sn_time_init() == true);
-}
-
-/* ---------------------------
    B. Monotonic Clock
 --------------------------- */
 
@@ -180,8 +163,6 @@ static void test_wall_time_monotonicish(void) {
 int main(void) {
     TEST_INFO("===== SnTime Tests Begin =====");
 
-    test_init_deinit();
-
     test_monotonic_order();
     test_monotonic_progress();
     test_time_diff();
@@ -195,8 +176,6 @@ int main(void) {
     test_wall_time_progress();
     test_wall_time_to_utc();
     test_wall_time_monotonicish();
-
-    sn_time_deinit();
 
     TEST_INFO("===== SnTime Tests PASSED =====");
     return 0;

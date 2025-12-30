@@ -17,23 +17,6 @@ typedef int64_t snTimeMs;
 /** } */
 
 /**
- * @brief Initialize the SnTime.
- *
- * This function must be called once before using any SnTime APIs.
- * It caches platform-specific data such as timer frequency.
- *
- * @return Returns true on success, false on failure.
- */
-SN_API bool sn_time_init(void);
-
-/*
- * @brief Deinitialize the SnTime.
- *
- * Safe to call even if sn_time_init() was not called.
- */
-SN_API void sn_time_deinit(void);
-
-/**
  * @brief Get current monotonic time.
  *
  * @return Returns the current monotonic time in nanoseconds.

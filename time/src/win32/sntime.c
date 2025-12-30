@@ -4,18 +4,10 @@
 
 #include <windows.h>
 
-static LARGE_INTEGER qpc_freequency = 0;
-
-bool sn_time_init(void) {
-    if (!QueryPerformanceFrequency(&qpc_freequency)) return false;
-    return true;
-}
-
-void sn_time_deinit(void) {
-    qpc_freequency = 0;
-}
-
 snTimeNs sn_time_now_ns(void) {
+    static LARGE_INTEGER qpc_freequency = {0};
+    if (!qpc_freequency.QuadPart) QueryPerformanceFrequency(&qpc_freequency);
+
     LARGE_INTEGER counter;
     QueryPerformanceCounter(&counter);
 

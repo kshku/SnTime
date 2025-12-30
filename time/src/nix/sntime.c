@@ -6,15 +6,6 @@
 #include <time.h>
 #include <errno.h>
 
-bool sn_time_init(void) {
-    // Nothing to do
-    return true;
-}
-
-void sn_time_deinit(void) {
-    // Nothing to do
-}
-
 snTimeNs sn_time_now_ns(void) {
     struct timespec ts;
     clock_gettime(CLOCK_MONOTONIC, &ts);
