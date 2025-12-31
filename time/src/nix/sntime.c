@@ -8,7 +8,11 @@
 
 snTimeNs sn_time_now_ns(void) {
     struct timespec ts;
+#if defined(SN_OS_LINUX)
+    clock_gettime(CLOCK_MONOTONIC_RAW, &ts);
+#else
     clock_gettime(CLOCK_MONOTONIC, &ts);
+#endif
     return (snTimeNs)ts.tv_sec * 1000000000LL + ts.tv_nsec;
 }
 

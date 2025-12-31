@@ -216,8 +216,8 @@ SN_API void sn_time_sleep_ms(snTimeMs ms);
  * This clock may jump forwards or backwards.
  */
 typedef struct snWallTime {
-    int64_t seconds;      /* Seconds since Unix epoch (1970-01-01 UTC) */
-    int32_t nanoseconds;  /* 0 .. 999,999,999 */
+    int64_t seconds;      /**< Seconds since Unix epoch (1970-01-01 UTC) */
+    int32_t nanoseconds;  /**< 0 .. 999,999,999 */
 } snWallTime;
 
 /**
@@ -228,13 +228,13 @@ typedef struct snWallTime {
  * This clock may jump forwards or backwards.
  */
 typedef struct snWallTimeUtc {
-    int32_t nanosecond; /** 0 .. 999,999,999 */
-    int16_t year; /** ex: 2025 */
-    int8_t month; /** 1-12 */
-    int8_t day; /** 1-31 */
-    int8_t hour; /** 0-23 */
-    int8_t minute; /** 0-59 */
-    int8_t second; /** 0-60 (leap seconds safe) */
+    int32_t nanosecond; /**< 0 .. 999,999,999 */
+    int16_t year; /**< ex: 2025 */
+    int8_t month; /**< 1-12 */
+    int8_t day; /**< 1-31 */
+    int8_t hour; /**< 0-23 */
+    int8_t minute; /**< 0-59 */
+    int8_t second; /**< 0-60 (leap seconds safe) */
 } snWallTimeUtc;
 
 /**
