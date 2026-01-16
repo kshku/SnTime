@@ -2,6 +2,28 @@
 
 #include "sntime/defines.h"
 
+#if defined(SN_TIME_STATIC)
+    #define SN_API
+#else
+    #ifdef SN_EXPORT
+        #if defined(SN_OS_LINUX) || defined(SN_OS_MAC)
+            #define SN_API __attribute__((visibility("default")))
+        #elif defined(SN_OS_WINDOWS)
+            #define SN_API __declspec(dllexport)
+        #else
+            #error "Should not reach here!"
+        #endif
+    #else
+        #if defined(SN_OS_LINUX) || defined(SN_OS_MAC)
+            #define SN_API
+        #elif defined(SN_OS_WINDOWS)
+            #define SN_API __declspec(dllimport)
+        #else
+            #error "Should not reach here!"
+        #endif
+    #endif
+#endif
+
 /**
  * @brief Signed 64-bit time value representing nanoseconds.
  *
@@ -264,3 +286,5 @@ SN_API bool sn_wall_time_to_utc(snWallTime wall_time, snWallTimeUtc *utc);
 SN_FORCE_INLINE bool sn_wall_time_validate(snWallTime t) {
     return t.nanoseconds >= 0 && t.nanoseconds < 1000000000;
 }
+
+#undef SN_API
