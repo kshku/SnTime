@@ -2,7 +2,7 @@
 
 #if defined(SN_OS_WINDOWS)
 
-#include <windows.h>
+    #include <windows.h>
 
 snTimeNs sn_time_now_ns(void) {
     static LARGE_INTEGER qpc_freequency = {0};
@@ -39,7 +39,7 @@ snWallTime sn_wall_time_now(void) {
     return (snWallTime){.seconds = ticks / 10000000ULL, .nanoseconds = (int32_t)((ticks % 10000000ULL) * 100)};
 }
 
-bool sn_wall_time_to_utc(snWallTime wall, snWallTimeUtc* utc) {
+bool sn_wall_time_to_utc(snWallTime wall, snWallTimeUtc *utc) {
     if (!utc) return false;
     if (!sn_wall_time_validate(wall)) return false;
 
@@ -54,15 +54,14 @@ bool sn_wall_time_to_utc(snWallTime wall, snWallTimeUtc* utc) {
     SYSTEMTIME st;
     if (!FileTimeToSystemTime(&ft, &st)) return false;
 
-    *utc = (snWallTimeUtc) {
+    *utc = (snWallTimeUtc){
         .year = st.wYear,
         .month = (int8_t)st.wMonth,
         .day = (int8_t)st.wDay,
         .hour = (int8_t)st.wHour,
         .minute = (int8_t)st.wMinute,
         .second = (int8_t)st.wSecond,
-        .nanosecond = wall.nanoseconds
-    };
+        .nanosecond = wall.nanoseconds};
 
     return true;
 }

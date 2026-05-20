@@ -1,20 +1,20 @@
+#include <math.h>
 #include <sntime/sntime.h>
-
 #include <stdio.h>
 #include <stdlib.h>
-#include <math.h>
 
-#define TEST_ASSERT(cond) do { \
-    if (!(cond)) { \
-        fprintf(stderr, "[FAIL] %s:%d: %s\n", __FILE__, __LINE__, #cond); \
-        exit(1); \
-    } \
-} while (0)
+#define TEST_ASSERT(cond)                                                     \
+    do {                                                                      \
+        if (!(cond)) {                                                        \
+            fprintf(stderr, "[FAIL] %s:%d: %s\n", __FILE__, __LINE__, #cond); \
+            exit(1);                                                          \
+        }                                                                     \
+    } while (0)
 
-#define TEST_INFO(msg) \
-    fprintf(stdout, "[INFO] %s\n", msg)
+#define TEST_INFO(msg) fprintf(stdout, "[INFO] %s\n", msg)
 
 #include "sntime/sntime.h"
+
 #include <stdio.h>
 
 /* ---------------------------

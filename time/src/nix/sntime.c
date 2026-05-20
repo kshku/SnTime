@@ -3,16 +3,16 @@
 
 #if defined(SN_OS_LINUX) || defined(SN_OS_MAC)
 
-#include <time.h>
-#include <errno.h>
+    #include <errno.h>
+    #include <time.h>
 
 snTimeNs sn_time_now_ns(void) {
     struct timespec ts;
-#if defined(SN_OS_LINUX)
+    #if defined(SN_OS_LINUX)
     clock_gettime(CLOCK_MONOTONIC_RAW, &ts);
-#else
+    #else
     clock_gettime(CLOCK_MONOTONIC, &ts);
-#endif
+    #endif
     return (snTimeNs)ts.tv_sec * 1000000000LL + ts.tv_nsec;
 }
 
@@ -23,7 +23,7 @@ void sn_time_sleep_ns(snTimeNs ns) {
     ts.tv_sec = ns / 1000000000LL;
     ts.tv_nsec = ns % 1000000000LL;
 
-    while (nanosleep(&ts, &ts) == -1 && errno == EINTR); // retries
+    while (nanosleep(&ts, &ts) == -1 && errno == EINTR);  // retries
 }
 
 void sn_time_sleep_ms(snTimeMs ms) {
@@ -40,30 +40,29 @@ snWallTime sn_wall_time_now(void) {
     return t;
 }
 
-bool sn_wall_time_to_utc(snWallTime wall, snWallTimeUtc* utc) {
+bool sn_wall_time_to_utc(snWallTime wall, snWallTimeUtc *utc) {
     if (!utc) return false;
     if (!sn_wall_time_validate(wall)) return false;
 
     time_t sec = (time_t)wall.seconds;
     struct tm tm;
 
-#if defined(SN_OS_LINUX) || defined(SN_OS_MAC)
+    #if defined(SN_OS_LINUX) || defined(SN_OS_MAC)
     if (!gmtime_r(&sec, &tm)) return false;
-#else
-    struct tm* tmp = gmtime(&sec);
+    #else
+    struct tm *tmp = gmtime(&sec);
     if (!tmp) return false;
     tm = *tmp;
-#endif
+    #endif
 
-    *utc = (snWallTimeUtc) {
+    *utc = (snWallTimeUtc){
         .year = tm.tm_year + 1900,
         .month = tm.tm_mon + 1,
         .day = tm.tm_mday,
         .hour = tm.tm_hour,
         .minute = tm.tm_min,
-        .second = tm.tm_sec, // may be 60
-        .nanosecond = wall.nanoseconds
-    };
+        .second = tm.tm_sec,  // may be 60
+        .nanosecond = wall.nanoseconds};
 
     return true;
 }

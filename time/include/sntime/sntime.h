@@ -1,8 +1,7 @@
 #pragma once
 
-#include "sntime/defines.h"
-
 #include "sntime/api.h"
+#include "sntime/defines.h"
 
 /**
  * @brief Signed 64-bit time value representing nanoseconds.
@@ -208,6 +207,7 @@ SN_API void sn_time_sleep_ns(snTimeNs ns);
  * @param ms Time to sleep in ms.
  */
 SN_API void sn_time_sleep_ms(snTimeMs ms);
+
 /** @} */
 
 /**
@@ -218,8 +218,8 @@ SN_API void sn_time_sleep_ms(snTimeMs ms);
  * This clock may jump forwards or backwards.
  */
 typedef struct snWallTime {
-    int64_t seconds;      /**< Seconds since Unix epoch (1970-01-01 UTC) */
-    int32_t nanoseconds;  /**< 0 .. 999,999,999 */
+    int64_t seconds; /**< Seconds since Unix epoch (1970-01-01 UTC) */
+    int32_t nanoseconds; /**< 0 .. 999,999,999 */
 } snWallTime;
 
 /**
@@ -260,7 +260,7 @@ SN_API bool sn_wall_time_to_utc(snWallTime wall_time, snWallTimeUtc *utc);
  * @brief Validates the wall time struct.
  *
  * @param t The wall time.
- * 
+ *
  * @return Returns true if wall time is valid, else false.
  */
 SN_FORCE_INLINE bool sn_wall_time_validate(snWallTime t) {
