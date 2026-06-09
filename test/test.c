@@ -24,8 +24,8 @@
 static void test_monotonic_order(void) {
     TEST_INFO("Monotonic ordering");
 
-    snTimeNs t1 = sn_time_now_ns();
-    snTimeNs t2 = sn_time_now_ns();
+    SnTimeNs t1 = sn_time_now_ns();
+    SnTimeNs t2 = sn_time_now_ns();
 
     TEST_ASSERT(t2 >= t1);
 }
@@ -33,9 +33,9 @@ static void test_monotonic_order(void) {
 static void test_monotonic_progress(void) {
     TEST_INFO("Monotonic progress over sleep");
 
-    snTimeNs t1 = sn_time_now_ns();
+    SnTimeNs t1 = sn_time_now_ns();
     sn_time_sleep_ms(10);
-    snTimeNs t2 = sn_time_now_ns();
+    SnTimeNs t2 = sn_time_now_ns();
 
     TEST_ASSERT(t2 > t1);
 }
@@ -43,22 +43,22 @@ static void test_monotonic_progress(void) {
 static void test_time_diff(void) {
     TEST_INFO("Time diff correctness");
 
-    snTimeNs start = sn_time_now_ns();
+    SnTimeNs start = sn_time_now_ns();
     sn_time_sleep_ms(5);
-    snTimeNs end = sn_time_now_ns();
+    SnTimeNs end = sn_time_now_ns();
 
-    snTimeNs diff = sn_time_diff_ns(start, end);
+    SnTimeNs diff = sn_time_diff_ns(start, end);
     TEST_ASSERT(diff > 0);
 }
 
 static void test_time_point(void) {
     TEST_INFO("Time point API");
 
-    snTimePoint a = sn_time_point_now();
+    SnTimePoint a = sn_time_point_now();
     sn_time_sleep_ms(2);
-    snTimePoint b = sn_time_point_now();
+    SnTimePoint b = sn_time_point_now();
 
-    snTimeNs elapsed = sn_time_elapsed_ns(a, b);
+    SnTimeNs elapsed = sn_time_elapsed_ns(a, b);
     TEST_ASSERT(elapsed > 0);
 }
 
@@ -69,13 +69,13 @@ static void test_time_point(void) {
 static void test_sleep_ns_minimum(void) {
     TEST_INFO("Sleep minimum guarantee");
 
-    const snTimeNs req = 5 * 1000 * 1000; /* 5 ms */
+    const SnTimeNs req = 5 * 1000 * 1000; /* 5 ms */
 
-    snTimeNs start = sn_time_now_ns();
+    SnTimeNs start = sn_time_now_ns();
     sn_time_sleep_ns(req);
-    snTimeNs end = sn_time_now_ns();
+    SnTimeNs end = sn_time_now_ns();
 
-    snTimeNs elapsed = end - start;
+    SnTimeNs elapsed = end - start;
 
     /* Must not wake early */
     TEST_ASSERT(elapsed >= req);
@@ -84,9 +84,9 @@ static void test_sleep_ns_minimum(void) {
 static void test_sleep_zero(void) {
     TEST_INFO("Sleep zero duration");
 
-    snTimeNs start = sn_time_now_ns();
+    SnTimeNs start = sn_time_now_ns();
     sn_time_sleep_ns(0);
-    snTimeNs end = sn_time_now_ns();
+    SnTimeNs end = sn_time_now_ns();
 
     TEST_ASSERT(end >= start);
 }
@@ -94,13 +94,13 @@ static void test_sleep_zero(void) {
 static void test_sleep_overshoot_tolerance(void) {
     TEST_INFO("Sleep overshoot tolerance");
 
-    const snTimeMs req_ms = 10;
+    const SnTimeMs req_ms = 10;
 
-    snTimeNs start = sn_time_now_ns();
+    SnTimeNs start = sn_time_now_ns();
     sn_time_sleep_ms(req_ms);
-    snTimeNs end = sn_time_now_ns();
+    SnTimeNs end = sn_time_now_ns();
 
-    snTimeNs elapsed_ms = (end - start) / 1000000;
+    SnTimeNs elapsed_ms = (end - start) / 1000000;
 
     /* Allow large overshoot on Windows */
     TEST_ASSERT(elapsed_ms >= req_ms);
@@ -114,7 +114,7 @@ static void test_sleep_overshoot_tolerance(void) {
 static void test_wall_time_basic(void) {
     TEST_INFO("Wall time basic validity");
 
-    snWallTime t = sn_wall_time_now();
+    SnWallTime t = sn_wall_time_now();
 
     TEST_ASSERT(sn_wall_time_validate(t));
     TEST_ASSERT(t.seconds > 1600000000); /* > 2020 */
@@ -123,9 +123,9 @@ static void test_wall_time_basic(void) {
 static void test_wall_time_progress(void) {
     TEST_INFO("Wall time progresses");
 
-    snWallTime a = sn_wall_time_now();
+    SnWallTime a = sn_wall_time_now();
     sn_time_sleep_ms(20);
-    snWallTime b = sn_wall_time_now();
+    SnWallTime b = sn_wall_time_now();
 
     TEST_ASSERT(b.seconds >= a.seconds);
 }
@@ -133,8 +133,8 @@ static void test_wall_time_progress(void) {
 static void test_wall_time_to_utc(void) {
     TEST_INFO("Wall time to UTC conversion");
 
-    snWallTime t = sn_wall_time_now();
-    snWallTimeUtc utc;
+    SnWallTime t = sn_wall_time_now();
+    SnWallTimeUtc utc;
 
     TEST_ASSERT(sn_wall_time_to_utc(t, &utc));
 
@@ -150,8 +150,8 @@ static void test_wall_time_to_utc(void) {
 static void test_wall_time_monotonicish(void) {
     TEST_INFO("Wall time non-decreasing");
 
-    snWallTime a = sn_wall_time_now();
-    snWallTime b = sn_wall_time_now();
+    SnWallTime a = sn_wall_time_now();
+    SnWallTime b = sn_wall_time_now();
 
     TEST_ASSERT(b.seconds >= a.seconds);
 }

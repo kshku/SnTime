@@ -4,30 +4,30 @@
 
     #include <windows.h>
 
-snTimeNs sn_time_now_ns(void) {
+SnTimeNs sn_time_now_ns(void) {
     static LARGE_INTEGER qpc_freequency = {0};
     if (!qpc_freequency.QuadPart) QueryPerformanceFrequency(&qpc_freequency);
 
     LARGE_INTEGER counter;
     QueryPerformanceCounter(&counter);
 
-    return (snTimeNs)((counter.QuadPart * 1000000000ll) / qpc_freequency.QuadPart);
+    return (SnTimeNs)((counter.QuadPart * 1000000000ll) / qpc_freequency.QuadPart);
 }
 
-void sn_time_sleep_ns(snTimeNs ns) {
+void sn_time_sleep_ns(SnTimeNs ns) {
     if (ns <= 0) return;
 
-    snTimeMs ms = ns / 1000000;
+    SnTimeMs ms = ns / 1000000;
     if (ms == 0) ms = 1;
     Sleep((DWORD)ms);
 }
 
-void sn_time_sleep_ms(snTimeMs ms) {
+void sn_time_sleep_ms(SnTimeMs ms) {
     if (ms <= 0) return;
     Sleep((DWORD)ms);
 }
 
-snWallTime sn_wall_time_now(void) {
+SnWallTime sn_wall_time_now(void) {
     FILETIME ft;
     GetSystemTimePreciseAsFileTime(&ft);
 
@@ -36,10 +36,10 @@ snWallTime sn_wall_time_now(void) {
     // Convert FILETIME → Unix epoch
     ticks -= 116444736000000000ULL;
 
-    return (snWallTime){.seconds = ticks / 10000000ULL, .nanoseconds = (int32_t)((ticks % 10000000ULL) * 100)};
+    return (SnWallTime){.seconds = ticks / 10000000ULL, .nanoseconds = (int32_t)((ticks % 10000000ULL) * 100)};
 }
 
-bool sn_wall_time_to_utc(snWallTime wall, snWallTimeUtc *utc) {
+bool sn_wall_time_to_utc(SnWallTime wall, SnWallTimeUtc *utc) {
     if (!utc) return false;
     if (!sn_wall_time_validate(wall)) return false;
 
@@ -54,7 +54,7 @@ bool sn_wall_time_to_utc(snWallTime wall, snWallTimeUtc *utc) {
     SYSTEMTIME st;
     if (!FileTimeToSystemTime(&ft, &st)) return false;
 
-    *utc = (snWallTimeUtc){
+    *utc = (SnWallTimeUtc){
         .year = st.wYear,
         .month = (int8_t)st.wMonth,
         .day = (int8_t)st.wDay,

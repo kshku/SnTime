@@ -6,17 +6,17 @@
     #include <errno.h>
     #include <time.h>
 
-snTimeNs sn_time_now_ns(void) {
+SnTimeNs sn_time_now_ns(void) {
     struct timespec ts;
     #if defined(SN_OS_LINUX)
     clock_gettime(CLOCK_MONOTONIC_RAW, &ts);
     #else
     clock_gettime(CLOCK_MONOTONIC, &ts);
     #endif
-    return (snTimeNs)ts.tv_sec * 1000000000LL + ts.tv_nsec;
+    return (SnTimeNs)ts.tv_sec * 1000000000LL + ts.tv_nsec;
 }
 
-void sn_time_sleep_ns(snTimeNs ns) {
+void sn_time_sleep_ns(SnTimeNs ns) {
     if (ns <= 0) return;
 
     struct timespec ts;
@@ -26,21 +26,21 @@ void sn_time_sleep_ns(snTimeNs ns) {
     while (nanosleep(&ts, &ts) == -1 && errno == EINTR);  // retries
 }
 
-void sn_time_sleep_ms(snTimeMs ms) {
+void sn_time_sleep_ms(SnTimeMs ms) {
     sn_time_sleep_ns(ms * 1000000LL);
 }
 
-snWallTime sn_wall_time_now(void) {
+SnWallTime sn_wall_time_now(void) {
     struct timespec ts;
     clock_gettime(CLOCK_REALTIME, &ts);
 
-    snWallTime t;
+    SnWallTime t;
     t.seconds = ts.tv_sec;
     t.nanoseconds = ts.tv_nsec;
     return t;
 }
 
-bool sn_wall_time_to_utc(snWallTime wall, snWallTimeUtc *utc) {
+bool sn_wall_time_to_utc(SnWallTime wall, SnWallTimeUtc *utc) {
     if (!utc) return false;
     if (!sn_wall_time_validate(wall)) return false;
 
@@ -55,7 +55,7 @@ bool sn_wall_time_to_utc(snWallTime wall, snWallTimeUtc *utc) {
     tm = *tmp;
     #endif
 
-    *utc = (snWallTimeUtc){
+    *utc = (SnWallTimeUtc){
         .year = tm.tm_year + 1900,
         .month = tm.tm_mon + 1,
         .day = tm.tm_mday,
