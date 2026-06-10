@@ -1,7 +1,7 @@
 #pragma once
 
 #include "sntime/api.h"
-#include "sntime/defines.h"
+#include <sncore/defines.h>
 
 /**
  * @brief Signed 64-bit time value representing nanoseconds.
