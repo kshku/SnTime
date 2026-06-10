@@ -11,4 +11,6 @@ target_include_directories(sntime PRIVATE "${CMAKE_CURRENT_SOURCE_DIR}")
 
 target_link_libraries(sntime PRIVATE sn_time_configs)
 
+target_link_libraries(sntime PUBLIC sncore)
+
 add_subdirectory(src)

@@ -1,7 +1,7 @@
 #pragma once
 
 #include "sntime/api.h"
-#include "sntime/defines.h"
+#include <sncore/defines.h>
 
 /**
  * @brief Signed 64-bit time value representing nanoseconds.
@@ -22,7 +22,7 @@ typedef int64_t SnTimeMs;
  *
  * @return Returns the current monotonic time in nanoseconds.
  */
-SN_API SnTimeNs sn_time_now_ns(void);
+SN_TIME_API SnTimeNs sn_time_now_ns(void);
 
 /**
  * @brief Get current monotonic time.
@@ -202,11 +202,11 @@ SN_FORCE_INLINE SnTimeNs sn_time_elapsed_ns(SnTimePoint start, SnTimePoint end) 
 /**
  * @param ns Time to sleep in ns.
  */
-SN_API void sn_time_sleep_ns(SnTimeNs ns);
+SN_TIME_API void sn_time_sleep_ns(SnTimeNs ns);
 /**
  * @param ms Time to sleep in ms.
  */
-SN_API void sn_time_sleep_ms(SnTimeMs ms);
+SN_TIME_API void sn_time_sleep_ms(SnTimeMs ms);
 
 /** @} */
 
@@ -244,7 +244,7 @@ typedef struct SnWallTimeUtc {
  *
  * @return Get the wall time.
  */
-SN_API SnWallTime sn_wall_time_now(void);
+SN_TIME_API SnWallTime sn_wall_time_now(void);
 
 /**
  * @brief Query the current wall clock time in UTC.
@@ -254,7 +254,7 @@ SN_API SnWallTime sn_wall_time_now(void);
  *
  * @return Returns true on success, else false.
  */
-SN_API bool sn_wall_time_to_utc(SnWallTime wall_time, SnWallTimeUtc *utc);
+SN_TIME_API bool sn_wall_time_to_utc(SnWallTime wall_time, SnWallTimeUtc *utc);
 
 /**
  * @brief Validates the wall time struct.
@@ -266,5 +266,3 @@ SN_API bool sn_wall_time_to_utc(SnWallTime wall_time, SnWallTimeUtc *utc);
 SN_FORCE_INLINE bool sn_wall_time_validate(SnWallTime t) {
     return t.nanoseconds >= 0 && t.nanoseconds < 1000000000;
 }
-
-#undef SN_API
