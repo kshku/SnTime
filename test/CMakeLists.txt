@@ -1,3 +1,5 @@
+enable_testing()
+
 set(SRCS
     test.c
 )
@@ -5,6 +7,8 @@ set(SRCS
 add_executable(sn_time_test)
 target_sources(sn_time_test PRIVATE ${SRCS})
 target_link_libraries(sn_time_test PRIVATE sntime)
+
+add_test(NAME sn_time_test COMMAND sn_time_test)
 
 if(CMAKE_SYSTEM_NAME STREQUAL "Windows" AND SN_TIME_BUILD_SHARED)
     add_custom_target(copy_dlls ALL
