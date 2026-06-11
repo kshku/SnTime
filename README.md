@@ -141,7 +141,7 @@ int main(void) {
 include(FetchContent)
 FetchContent_Declare(sntime
     GIT_REPOSITORY https://github.com/kshku/SnTime.git
-    GIT_TAG main
+    GIT_TAG <tag>  # e.g., v0.1.0
 )
 FetchContent_MakeAvailable(sntime)
 
