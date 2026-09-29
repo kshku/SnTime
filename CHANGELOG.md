@@ -1,5 +1,14 @@
 # Changelog
 
+## [0.2.2] - 2026-09-28
+
+### Changed
+- -Wconversion and -Wsign-conversion are on for gcc and clang. sn_wall_time_now
+  and sn_wall_time_to_utc left their narrowing from the timespec and struct tm
+  fields to implicit conversions; the values are in range by contract, so the
+  casts are now explicit
+
+
 ## [0.2.1] - 2026-09-28
 
 ### Changed

@@ -35,8 +35,9 @@ SnWallTime sn_wall_time_now(void) {
     clock_gettime(CLOCK_REALTIME, &ts);
 
     SnWallTime t;
-    t.seconds = ts.tv_sec;
-    t.nanoseconds = ts.tv_nsec;
+    /* POSIX bounds tv_nsec to 0 .. 999999999, which fits int32_t. */
+    t.seconds = (int64_t)ts.tv_sec;
+    t.nanoseconds = (int32_t)ts.tv_nsec;
     return t;
 }
 
@@ -55,13 +56,16 @@ bool sn_wall_time_to_utc(SnWallTime wall, SnWallTimeUtc *utc) {
     tm = *tmp;
     #endif
 
+    /* A successful gmtime_r leaves every field in its documented range, which is
+     * what the narrow SnWallTimeUtc fields are sized for. The casts make that
+     * dependence explicit instead of leaving it to an implicit conversion. */
     *utc = (SnWallTimeUtc){
-        .year = tm.tm_year + 1900,
-        .month = tm.tm_mon + 1,
-        .day = tm.tm_mday,
-        .hour = tm.tm_hour,
-        .minute = tm.tm_min,
-        .second = tm.tm_sec,  // may be 60
+        .year = (int16_t)(tm.tm_year + 1900),
+        .month = (int8_t)(tm.tm_mon + 1),
+        .day = (int8_t)tm.tm_mday,
+        .hour = (int8_t)tm.tm_hour,
+        .minute = (int8_t)tm.tm_min,
+        .second = (int8_t)tm.tm_sec,  // may be 60
         .nanosecond = wall.nanoseconds};
 
     return true;
