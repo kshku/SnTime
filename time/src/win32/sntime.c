@@ -54,8 +54,10 @@ bool sn_wall_time_to_utc(SnWallTime wall, SnWallTimeUtc *utc) {
     SYSTEMTIME st;
     if (!FileTimeToSystemTime(&ft, &st)) return false;
 
+    /* FileTimeToSystemTime leaves every field in its documented range, which is
+     * what the narrow SnWallTimeUtc fields are sized for. */
     *utc = (SnWallTimeUtc){
-        .year = st.wYear,
+        .year = (int16_t)st.wYear,
         .month = (int8_t)st.wMonth,
         .day = (int8_t)st.wDay,
         .hour = (int8_t)st.wHour,
